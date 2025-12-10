@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Item
   itemName: Big Fish
   itemIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  itemPrefab: {fileID: 665807475240383984, guid: da08b2add9bab864098b9896a08a89b4, type: 3}
