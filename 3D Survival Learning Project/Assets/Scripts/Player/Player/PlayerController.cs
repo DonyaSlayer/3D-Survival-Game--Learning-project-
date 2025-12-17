@@ -5,12 +5,15 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField]private float _moveSpeed;
+    [SerializeField] private float _walkSpeed;
+    [SerializeField] private float _runSpeed;
     [SerializeField] private float _lookSpeed;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private float _cameraLimit;
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _gravity;
     private float _verticalVelocity;
+    public bool isRunning; 
 
 
     [Header("References")]
@@ -21,6 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private InputActionReference _moveAction;
     [SerializeField] private InputActionReference _lookAction;
     [SerializeField] private InputActionReference _jumpAction;
+    [SerializeField] private InputActionReference _runAction;
 
 
     private Vector2 _moveInput;
@@ -28,10 +32,13 @@ public class PlayerController : MonoBehaviour
     private float _cameraPitch;
 
 
+    private NeedsManager _needsManager;
+
     private void Awake()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        _needsManager = NeedsManager.instance;
     }
 
     private void Update()
@@ -61,8 +68,20 @@ public class PlayerController : MonoBehaviour
         {
             _verticalVelocity += _gravity * Time.deltaTime;
         }
-        
-        Vector3 velocity = direction * _moveSpeed;
+
+        if (_runAction.action.IsPressed() && _needsManager.Energy.CanRun)
+        {
+            _moveSpeed = _runSpeed;
+            _needsManager.Running();
+            isRunning = true;
+        }
+        else
+        {
+            _moveSpeed = _walkSpeed;
+            isRunning = false;
+        }
+
+            Vector3 velocity = direction * _moveSpeed;
         velocity.y = _verticalVelocity;
         _characterController.Move(velocity * Time.deltaTime);
 

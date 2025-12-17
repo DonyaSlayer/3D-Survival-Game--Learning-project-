@@ -54,6 +54,10 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < inventoryCells.Length; i++)
         {
+            if (itemCount[i] == 0 && items[i] != null)
+            {
+                items[i] = null;
+            }
             inventoryCells[i].RefreshCell(items[i], itemCount[i]);
         }
     }

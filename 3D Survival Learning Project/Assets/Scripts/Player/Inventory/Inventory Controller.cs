@@ -8,6 +8,7 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private InputActionReference _rightSelectionAction;
     [SerializeField] private InputActionReference _scrollSelectionAction;
     [SerializeField] private InputActionReference _dropAction;
+    [SerializeField] private InputActionReference _useAction;
 
 
     [Header("Selection")]
@@ -18,11 +19,13 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private Inventory _playerInventory;
     private InventoryCell[] _cells;
     private Camera _mainCamera;
+    private NeedsManager _needsManager;
 
     private void Awake()
     {
         _cells = _playerInventory.inventoryCells;
         _mainCamera = Camera.main;
+        _needsManager = NeedsManager.instance;
     }
 
     private void Start()
@@ -34,6 +37,7 @@ public class InventoryController : MonoBehaviour
     {
         HandleSelection();
         HandleDrop();
+        HandleUse();
     }
 
     private void HandleSelection()
@@ -63,6 +67,19 @@ public class InventoryController : MonoBehaviour
         {
             Instantiate(_playerInventory.items[_currentSelection].itemPrefab, _mainCamera.transform.position + transform.forward, Quaternion.identity, null);
             _playerInventory.ClearSlot(_currentSelection);
+        }
+    }
+
+    private void HandleUse()
+    {
+        if (_useAction.action.triggered)
+        {
+            if (_playerInventory.items[_currentSelection] && _playerInventory.items[_currentSelection].usable.isUsable == true)
+            {
+                _needsManager.UseItem(_playerInventory.items[_currentSelection]);
+                _playerInventory.itemCount[_currentSelection]--;
+                _playerInventory.Refresh();
+            }
         }
     }
     private void SetSelection(int value)
