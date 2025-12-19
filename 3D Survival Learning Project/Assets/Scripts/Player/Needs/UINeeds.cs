@@ -9,7 +9,7 @@ public class UINeeds : MonoBehaviour
 
     private NeedsManager _needsManager;
 
-    private void Awake()
+    private void Start()
     {
         _needsManager = NeedsManager.instance;
     }

@@ -14,6 +14,7 @@ public class PlayerInteraction : MonoBehaviour
 
     [Header ("References")]
     [SerializeField] private Inventory _playerInventory;
+    [SerializeField] private InventoryController _inventoryController;
 
     [Header("Input")]
     [SerializeField] private InputActionReference _interactAction;
@@ -37,6 +38,7 @@ public class PlayerInteraction : MonoBehaviour
                 if(_interactAction.action.triggered)
                 {
                     _playerInventory.AddItem(itemToInteract.item);
+                    _inventoryController.RefreshTool();
                     Destroy(hit.collider.gameObject);
                 }
             }

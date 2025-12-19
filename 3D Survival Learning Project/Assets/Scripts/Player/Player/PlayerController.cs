@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private CharacterController _characterController;
+    [SerializeField] private Animator _handAnimator;
 
     [Header("Input")]
     [SerializeField] private PlayerInput _playerInput;
@@ -38,6 +39,10 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void Start()
+    {
         _needsManager = NeedsManager.instance;
     }
 
@@ -45,7 +50,6 @@ public class PlayerController : MonoBehaviour
     {
         _moveInput = _moveAction.action.ReadValue<Vector2>();
         _lookInput = _lookAction.action.ReadValue<Vector2>();
-
         HandleMovement(_moveInput);
         HandleLook(_lookInput);
     }
@@ -84,8 +88,9 @@ public class PlayerController : MonoBehaviour
             Vector3 velocity = direction * _moveSpeed;
         velocity.y = _verticalVelocity;
         _characterController.Move(velocity * Time.deltaTime);
-
-
+        _handAnimator.SetFloat("Velocity", velocity.magnitude);
+        /*TEST
+        Debug.Log(velocity.magnitude);*/
     }
 
     private void HandleLook(Vector2 lookInput)

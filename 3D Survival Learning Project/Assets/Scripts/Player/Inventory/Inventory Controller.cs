@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,23 +15,30 @@ public class InventoryController : MonoBehaviour
     [Header("Selection")]
     [SerializeField] private int _currentSelection;
 
+    [Header("Tools")]
+
+    [SerializeField] private Transform _handTransform;
+    [SerializeField] private Animator _handAnimator;
+    private Item _currentTool;
+    private GameObject _currentToolInHand;
 
     [Header("References")]
     [SerializeField] private Inventory _playerInventory;
     private InventoryCell[] _cells;
     private Camera _mainCamera;
     private NeedsManager _needsManager;
+    
 
     private void Awake()
     {
         _cells = _playerInventory.inventoryCells;
         _mainCamera = Camera.main;
-        _needsManager = NeedsManager.instance;
     }
 
     private void Start()
     {
         RefreshSelection();
+        _needsManager = NeedsManager.instance;
     }
 
     private void Update()
@@ -54,11 +62,11 @@ public class InventoryController : MonoBehaviour
         float scroll = _scrollSelectionAction.action.ReadValue<float>();
         if (scroll < 0)
         {
-            SetSelection(-1);
+            SetSelection(1);
         }
         else if (scroll > 0)
         {
-            SetSelection(1);
+            SetSelection(-1);
         }
     }
     private void HandleDrop()
@@ -103,5 +111,49 @@ public class InventoryController : MonoBehaviour
             _cells[i].selection.SetActive(false);
         }
         _cells[_currentSelection].selection.SetActive(true);
+        RefreshTool();
+    }
+
+    public void RefreshTool()
+    {
+        if (_playerInventory.items[_currentSelection] && _playerInventory.items[_currentSelection].tool.isTool)
+        { 
+            if(_currentTool && _currentTool != _playerInventory.items[_currentSelection])
+            {
+                StartCoroutine(Disactivate(_currentToolInHand));
+                _handAnimator.Play("HideTool");
+                _currentTool = null;
+                _currentToolInHand = null;
+            }
+            for (int i = 0; i < _handTransform.childCount; i++)
+            {
+                if (_handTransform.GetChild(i).name == _playerInventory.items[_currentSelection].itemName)
+                {
+                    _handTransform.GetChild(i).gameObject.SetActive(true);
+                    _currentTool = _playerInventory.items[_currentSelection];
+                    _currentToolInHand = _handTransform.GetChild(i).gameObject;
+                    _handAnimator.Play("TakeToolAnim");
+                }
+            }
+        }else
+        {
+            for (int i = 0; i < _handTransform.childCount; i++)
+            {
+                if (_currentToolInHand)
+                {
+                    StartCoroutine(Disactivate(_currentToolInHand));
+                    _handAnimator.Play("HideTool");
+                }
+                //_handTransform.GetChild(i).gameObject.SetActive(false);
+                _currentToolInHand = null;
+                _currentTool = null;
+            }
+        }
+    }
+
+    private IEnumerator Disactivate(GameObject objectToDisactivate)
+    {
+        yield return new WaitForSeconds(0.35f);
+        objectToDisactivate.SetActive(false);
     }
 }
