@@ -18,8 +18,8 @@ public class InventoryController : MonoBehaviour
     [Header("Tools")]
 
     [SerializeField] private Transform _handTransform;
-    [SerializeField] private Animator _handAnimator;
-    private Item _currentTool;
+    public Animator handAnimator;
+    public Item currentTool;
     private GameObject _currentToolInHand;
 
     [Header("References")]
@@ -118,11 +118,11 @@ public class InventoryController : MonoBehaviour
     {
         if (_playerInventory.items[_currentSelection] && _playerInventory.items[_currentSelection].tool.isTool)
         { 
-            if(_currentTool && _currentTool != _playerInventory.items[_currentSelection])
+            if(currentTool && currentTool != _playerInventory.items[_currentSelection])
             {
                 StartCoroutine(Disactivate(_currentToolInHand));
-                _handAnimator.Play("HideTool");
-                _currentTool = null;
+                handAnimator.Play("HideTool");
+                currentTool = null;
                 _currentToolInHand = null;
             }
             for (int i = 0; i < _handTransform.childCount; i++)
@@ -130,9 +130,9 @@ public class InventoryController : MonoBehaviour
                 if (_handTransform.GetChild(i).name == _playerInventory.items[_currentSelection].itemName)
                 {
                     _handTransform.GetChild(i).gameObject.SetActive(true);
-                    _currentTool = _playerInventory.items[_currentSelection];
-                    _currentToolInHand = _handTransform.GetChild(i).gameObject;
-                    _handAnimator.Play("TakeToolAnim");
+                    currentTool = _playerInventory.items[_currentSelection];
+                   _currentToolInHand = _handTransform.GetChild(i).gameObject;
+                    handAnimator.Play("TakeToolAnim");
                 }
             }
         }else
@@ -142,18 +142,18 @@ public class InventoryController : MonoBehaviour
                 if (_currentToolInHand)
                 {
                     StartCoroutine(Disactivate(_currentToolInHand));
-                    _handAnimator.Play("HideTool");
+                    handAnimator.Play("HideTool");
                 }
                 //_handTransform.GetChild(i).gameObject.SetActive(false);
                 _currentToolInHand = null;
-                _currentTool = null;
+                currentTool = null;
             }
         }
     }
 
     private IEnumerator Disactivate(GameObject objectToDisactivate)
     {
-        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(0.2f);
         objectToDisactivate.SetActive(false);
     }
 }

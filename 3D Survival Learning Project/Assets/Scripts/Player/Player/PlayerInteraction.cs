@@ -15,9 +15,11 @@ public class PlayerInteraction : MonoBehaviour
     [Header ("References")]
     [SerializeField] private Inventory _playerInventory;
     [SerializeField] private InventoryController _inventoryController;
-
+    
     [Header("Input")]
     [SerializeField] private InputActionReference _interactAction;
+    [SerializeField] private InputActionReference _useToolAction;
+
 
     private void Start()
     {
@@ -42,6 +44,11 @@ public class PlayerInteraction : MonoBehaviour
                     Destroy(hit.collider.gameObject);
                 }
             }
+        }
+
+        if(_useToolAction.action.triggered && _inventoryController.currentTool)
+        {
+            _inventoryController.handAnimator.Play("Attack");
         }
     }
 }

@@ -582,6 +582,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39adbc7ea791ff24888993a6bdbebb95, type: 3}
+--- !u!114 &219064342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player Input Actions/Attack/UseTool
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 97e2e0fd1b350624c9173dc91791a73e, type: 3}
+  m_ActionId: d77be1b5-81ad-4c92-896a-d125fdc1082d
 --- !u!1001 &221863864
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2330,7 +2344,8 @@ MonoBehaviour:
   _useAction: {fileID: 72391472}
   _currentSelection: 0
   _handTransform: {fileID: 1682985648}
-  _handAnimator: {fileID: 1682985649}
+  handAnimator: {fileID: 1682985649}
+  currentTool: {fileID: 0}
   _playerInventory: {fileID: 1011276852}
 --- !u!114 &1011276854
 MonoBehaviour:
@@ -2349,6 +2364,7 @@ MonoBehaviour:
   _playerInventory: {fileID: 1011276852}
   _inventoryController: {fileID: 1011276853}
   _interactAction: {fileID: 1217290345}
+  _useToolAction: {fileID: 219064342}
 --- !u!114 &1011276855
 MonoBehaviour:
   m_ObjectHideFlags: 0
