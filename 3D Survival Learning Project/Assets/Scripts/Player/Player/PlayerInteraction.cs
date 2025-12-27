@@ -20,6 +20,9 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private InputActionReference _interactAction;
     [SerializeField] private InputActionReference _useToolAction;
 
+    [Header("Tools")]
+    [SerializeField] private float _toolsDistance;
+
 
     private void Start()
     {
@@ -49,6 +52,16 @@ public class PlayerInteraction : MonoBehaviour
         if(_useToolAction.action.triggered && _inventoryController.currentTool)
         {
             _inventoryController.handAnimator.Play("Attack");
+            Ray rayTool = _mainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+            RaycastHit hitTool; //info container for RayCastPoint
+
+            if (Physics.Raycast(rayTool, out hitTool, _toolsDistance))
+            {
+                if(hitTool.collider.gameObject.TryGetComponent<Resource>(out Resource resource))
+                {
+                    resource.TryHit(_inventoryController.currentTool.tool, _playerInventory);
+                }
+            }
         }
     }
 }

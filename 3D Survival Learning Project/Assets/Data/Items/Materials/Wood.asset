@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 874ecc7275c8905418a56a8f02de2db7, type: 3}
+  m_Name: Wood
+  m_EditorClassIdentifier: Assembly-CSharp::Item
+  itemName: Wood
+  itemIcon: {fileID: 7482667652216324306, guid: 576b8c77aee26e640b1e36af9f81e5b0, type: 3}
+  itemPrefab: {fileID: 3014424374259716686, guid: 98255a76778855d41a6b815a5f62a832, type: 3}
+  usable:
+    isUsable: 0
+    healthAmount: 0
+    hungerAmount: 0
+    energyAmount: 0
+  tool:
+    isTool: 0
+    effectiveness: 0
+    durability: 0
+    type: 0

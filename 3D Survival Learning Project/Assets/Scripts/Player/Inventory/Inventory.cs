@@ -36,8 +36,15 @@ public class Inventory : MonoBehaviour
                 }
              }
         }
-
         Refresh(); 
+    }
+
+    public void AddItemCount(Item item,int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            AddItem(item);
+        }
     }
 
     public void ClearSlot(int index) // analogy for ItemDrop from course
