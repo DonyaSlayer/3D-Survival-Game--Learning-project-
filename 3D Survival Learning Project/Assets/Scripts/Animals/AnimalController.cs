@@ -1,67 +1,61 @@
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
+using UnityEngine.Rendering.Universal;
+
 
 public class AnimalController : MonoBehaviour
 {
-    [Header("Wander Settings")]
-    [SerializeField] private float _wanderRadius = 25f;
-    [SerializeField] private float _minIdleTime = 2f;
-    [SerializeField] private float _maxIdleTime = 5f;
-    [SerializeField] private float _maxSpeed;
+    [Header("General Stats")]
+    public float maxSpeed;
+    public float runSpeed;
+
+    [Header("Wander Stats")]
+    public float wanderRadius = 25f;
+    public float minIdleTime = 2f;
+    public float maxIdleTime = 5f;
 
 
-    private Animator _animator;
+    [Header("Direction")]
+    public float detectionRadius;
+    public Transform playerTransform;
+    public LayerMask predatorLayer;
 
-    private NavMeshAgent _agent;
-    private Vector3 _spawnPoint;
-    private bool _isWaiting;
+    
+    [HideInInspector]public Animator animator;
+    [HideInInspector] public NavMeshAgent agent;
+    [HideInInspector] public Vector3 spawnPoint;
+    
+    public StateMachine StateMachine { get; private set; }
+    public WanderState WanderState { get; private set; }
+    public FleeState FleeState { get; private set; }
 
+    private void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+        spawnPoint = transform.position;
+
+        //initialization of Mchine and States
+
+        StateMachine = new StateMachine();
+        WanderState = new WanderState(this, StateMachine);
+        FleeState = new FleeState(this, StateMachine);
+    }
     private void Start()
     {
-        _agent = GetComponent<NavMeshAgent>();
-        _animator = GetComponent<Animator>(); 
-        _spawnPoint = transform.position;
-        StartCoroutine(WanderRoutine());
+        StateMachine.Initialize(WanderState);
     }
 
     private void Update()
     {
-        float currentSpeed = _agent.velocity.magnitude;
-        float normalizedSpeed = Mathf.Clamp01(currentSpeed / _maxSpeed);
-        _animator.SetFloat("State", normalizedSpeed);
+        StateMachine.CurrentState.LogicUpdate();
+        float currentSpeed = agent.velocity.magnitude;
+        animator.SetFloat("State", Mathf.Clamp01(currentSpeed / maxSpeed));
     }
 
-    private IEnumerator WanderRoutine()
+    private void OnDrawGizmosSelected()
     {
-        while (true)
-        {
-            if (!_agent.pathPending && !_agent.hasPath && !_isWaiting)
-            {
-                _isWaiting = true;
-                float waitTime = Random.Range(_minIdleTime, _maxIdleTime);
-                yield return new WaitForSeconds(waitTime);
-                Vector3 destination = GetRandomPointInRadius(_spawnPoint, _wanderRadius);
-                _agent.SetDestination(destination);
-                _isWaiting = false;
-            }
-            yield return null;
-        }
-    }
-
-    private Vector3 GetRandomPointInRadius(Vector3 center, float radius)
-    {
-        for(int i = 0; i < 30; i++)
-        {
-            Vector3 randomDirection = Random.insideUnitSphere * radius;
-            randomDirection += center;
-            randomDirection.y = center.y;
-            if(NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-            {
-                return hit.position;
-            }
-        }
-
-        return center;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }
