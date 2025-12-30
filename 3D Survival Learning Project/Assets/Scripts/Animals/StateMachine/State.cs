@@ -2,12 +2,12 @@ using UnityEngine;
 
 public abstract class State 
 {
-    protected AnimalController _animalController;
+    protected NPCController _controller;
     protected StateMachine _stateMachine;
 
-    public State (AnimalController animalController, StateMachine stateMachine)
+    public State (NPCController controller, StateMachine stateMachine)
     {
-        _animalController = animalController;
+        _controller = controller;
         _stateMachine = stateMachine;
     }
 

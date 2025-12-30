@@ -5,30 +5,25 @@ public class WanderState : State
 {
     private float _timer;
     private bool _isIdle;
-
-    public WanderState(AnimalController animal, StateMachine stateMachine) : base(animal, stateMachine) { }
+    public WanderState(NPCController controller, StateMachine stateMachine) : base(controller, stateMachine) { }
 
     public override void Enter()
     {
-        _animalController.agent.speed = _animalController.maxSpeed;
+        _controller.agent.speed = _controller.maxSpeed;
         _isIdle = false;
         SetNewDestination();
     }
     public override void LogicUpdate()
     {
-        //1. Checking for changing the state to Flee state
-        if (Vector3.Distance(_animalController.transform.position, _animalController.playerTransform.position) < _animalController.detectionRadius)
-        {
-            _stateMachine.ChangeState(_animalController.FleeState);
-            return;
-        }
+        CheckTransitions();
+        
         //2. Wandering logic
-        if(!_animalController.agent.pathPending && _animalController.agent.remainingDistance < 0.5f)
+        if(!_controller.agent.pathPending && _controller.agent.remainingDistance < 0.5f)
         {
             if(!_isIdle)
             {
                 _isIdle=true;
-                _timer = Random.Range(_animalController.minIdleTime, _animalController.maxIdleTime);
+                _timer = Random.Range(_controller.minIdleTime, _controller.maxIdleTime);
             }
         }
 
@@ -43,10 +38,15 @@ public class WanderState : State
         }
     }
 
+    protected virtual void CheckTransitions()
+    {
+
+    }
+
     private void SetNewDestination()
     {
-        Vector3 randomPoint = GetRandomPointInRadius(_animalController.spawnPoint, _animalController.wanderRadius);
-        _animalController.agent.SetDestination(randomPoint);
+        Vector3 randomPoint = GetRandomPointInRadius(_controller.spawnPoint, _controller.wanderRadius);
+        _controller.agent.SetDestination(randomPoint);
     }
 
     private Vector3 GetRandomPointInRadius(Vector3 center, float radius)

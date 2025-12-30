@@ -1,33 +1,34 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class FleeState : State
 {
-    public FleeState (AnimalController animal, StateMachine stateMachine) : base (animal, stateMachine) { }
+    public FleeState (NPCController controller, StateMachine stateMachine) : base (controller, stateMachine) { }
 
     public override void Enter()
     {
-        _animalController.agent.speed = _animalController.runSpeed;
-        _animalController.agent.ResetPath();
+        _controller.agent.speed = _controller.runSpeed;
+        _controller.agent.ResetPath();
     }
 
     public override void LogicUpdate()
     {
         //Vector from Player
-        Vector3 directionToPlayer = _animalController.transform.position - _animalController.playerTransform.position;
+        Vector3 directionToPlayer = _controller.transform.position - _controller.playerTransform.position;
         //Target point
-        Vector3 runPosition = _animalController.transform.position + directionToPlayer.normalized * 5f;
+        Vector3 runPosition = _controller.transform.position + directionToPlayer.normalized * 5f;
         //Start of runiing
-        _animalController.agent.SetDestination(runPosition);
+        _controller.agent.SetDestination(runPosition);
         // Condition for returning to idle state
-        if (Vector3.Distance(_animalController.transform.position, _animalController.playerTransform.position) > _animalController.detectionRadius + 5f)
+        if (Vector3.Distance(_controller.transform.position, _controller.playerTransform.position) > _controller.detectionRadius + 5f)
         {
-            _stateMachine.ChangeState(_animalController.WanderState);
+            _stateMachine.ChangeState(_controller.WanderState);
         }
     }
 
     public override void Exit()
     {
-        _animalController.agent.ResetPath();
-        _animalController.agent.speed = _animalController.maxSpeed;
+        _controller.agent.ResetPath();
+        _controller.agent.speed = _controller.maxSpeed;
     }
 }
