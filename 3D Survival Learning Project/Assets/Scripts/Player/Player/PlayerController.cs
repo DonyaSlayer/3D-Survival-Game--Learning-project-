@@ -13,7 +13,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _gravity;
     private float _verticalVelocity;
-    public bool isRunning; 
+    public bool isRunning;
+
+    [Header("Water Movement")]
+    [SerializeField] private float _waterGravity;
+    [SerializeField] private float _swimUpSpeed;
+    [HideInInspector] public bool isInWater = false;
 
 
     [Header("References")]
@@ -26,6 +31,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private InputActionReference _lookAction;
     [SerializeField] private InputActionReference _jumpAction;
     [SerializeField] private InputActionReference _runAction;
+    public bool IsJumpPressed => _jumpAction != null && _jumpAction.action.IsPressed();
 
 
     private Vector2 _moveInput;
@@ -70,7 +76,19 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            _verticalVelocity += _gravity * Time.deltaTime;
+            if (!isInWater)
+            {
+                _verticalVelocity += _gravity * Time.deltaTime;
+            }
+            else
+            {
+                _verticalVelocity -= _waterGravity * Time.deltaTime;
+                if(IsJumpPressed)
+                {
+                    _verticalVelocity = Mathf.Lerp(_verticalVelocity, _swimUpSpeed, 5f * Time.deltaTime);
+                }
+                _verticalVelocity = Mathf.Max(_verticalVelocity, -2f);
+            }
         }
 
         if (_runAction.action.IsPressed() && _needsManager.Energy.CanRun)
@@ -85,12 +103,10 @@ public class PlayerController : MonoBehaviour
             isRunning = false;
         }
 
-            Vector3 velocity = direction * _moveSpeed;
-        velocity.y = _verticalVelocity;
+        Vector3 velocity = direction * _moveSpeed;
+         velocity.y = _verticalVelocity;
         _characterController.Move(velocity * Time.deltaTime);
         _handAnimator.SetFloat("Velocity", velocity.magnitude);
-        /*TEST
-        Debug.Log(velocity.magnitude);*/
     }
 
     private void HandleLook(Vector2 lookInput)

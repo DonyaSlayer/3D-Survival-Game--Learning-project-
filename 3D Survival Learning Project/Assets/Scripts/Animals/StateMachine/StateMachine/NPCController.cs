@@ -36,9 +36,8 @@ public abstract class NPCController : MonoBehaviour
     protected virtual void Update()
     {
         if (StateMachine.CurrentState != null)
-            StateMachine.CurrentState.LogicUpdate();
+        StateMachine.CurrentState.LogicUpdate();
         float currentSpeed = agent.velocity.magnitude;
         animator.SetFloat("State", Mathf.Clamp01(currentSpeed / runSpeed));
-        Debug.Log(currentSpeed);
     }
 }
