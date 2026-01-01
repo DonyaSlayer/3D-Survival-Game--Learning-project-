@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pickaxe
   m_EditorClassIdentifier: Assembly-CSharp::Item
   itemName: Pickaxe
-  itemIcon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  itemIcon: {fileID: -36851808, guid: 38cd23622b051d74bb1de3a1211596f9, type: 3}
   itemPrefab: {fileID: 2783177623089392236, guid: 2bf0504248b84a846b0a43b75bcdebe1, type: 3}
   usable:
     isUsable: 0
@@ -25,3 +25,6 @@ MonoBehaviour:
     effectiveness: 50
     durability: 50
     type: 1
+  build:
+    _prefab: {fileID: 0}
+    isBuild: 0

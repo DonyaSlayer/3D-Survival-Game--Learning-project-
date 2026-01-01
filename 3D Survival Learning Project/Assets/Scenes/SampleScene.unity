@@ -3521,6 +3521,7 @@ MonoBehaviour:
   handAnimator: {fileID: 1682985649}
   currentTool: {fileID: 0}
   _playerInventory: {fileID: 1011276852}
+  _playerBuilding: {fileID: 1011276857}
 --- !u!114 &1011276854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3582,7 +3583,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 1
   m_Constraints: 112
@@ -3599,7 +3600,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3d8218340959804b8614556ea51dbe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBuilding
-  _buildPrefab: {fileID: 7145389802791278570, guid: ed56a2ea922cac24d9beacc5c2c88df0, type: 3}
   _maxBuildDistance: 5
   _surfaceAngleLimit: 30
   _collisionCheckRadius: 1
@@ -3612,6 +3612,7 @@ MonoBehaviour:
   _greenMaterial: {fileID: 2100000, guid: 1ba51d8b74f665d448cc1d6c72f8393b, type: 2}
   _redMaterial: {fileID: 2100000, guid: 7d4fb4ce34ddb064abff0bd647639b85, type: 2}
   _buildKey: {fileID: 1309014537}
+  _inventoryController: {fileID: 1011276853}
 --- !u!1 &1022275034
 GameObject:
   m_ObjectHideFlags: 0
@@ -4094,6 +4095,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
   m_Asset: {fileID: -944628639613478452, guid: 97e2e0fd1b350624c9173dc91791a73e, type: 3}
   m_ActionId: bc478079-25ca-4ea3-b32d-75af97be2b68
+--- !u!1001 &1165611189
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4816652075166365020, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
+      propertyPath: m_Name
+      value: CampFire (ITEM)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031335002320089503, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.8362427
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031335002320089503, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.49439648
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031335002320089503, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.844547
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031335002320089503, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031335002320089503, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031335002320089503, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031335002320089503, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031335002320089503, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031335002320089503, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031335002320089503, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
 --- !u!1001 &1169076613
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7258,6 +7316,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
   m_Asset: {fileID: -944628639613478452, guid: 97e2e0fd1b350624c9173dc91791a73e, type: 3}
   m_ActionId: a200c33b-01bc-4302-b58f-987a32aca85a
+--- !u!1 &2031470504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2031470506}
+  - component: {fileID: 2031470505}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2031470505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031470504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d45733257a747d4ca20542f2efd772a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
+--- !u!4 &2031470506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031470504}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2041844844
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8717,6 +8819,7 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1174718303}
+  - {fileID: 2031470506}
   - {fileID: 1011276848}
   - {fileID: 1572163290}
   - {fileID: 1358348810}
@@ -8727,3 +8830,4 @@ SceneRoots:
   - {fileID: 8203089065290149708}
   - {fileID: 3946117988761947445}
   - {fileID: 5449723447850425099}
+  - {fileID: 1165611189}

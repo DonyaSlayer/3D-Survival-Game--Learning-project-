@@ -43,7 +43,7 @@ public class PlayerInteraction : MonoBehaviour
                 if(_interactAction.action.triggered)
                 {
                     _playerInventory.AddItem(itemToInteract.item);
-                    _inventoryController.RefreshTool();
+                    _inventoryController.RefreshSelection();
                     Destroy(hit.collider.gameObject);
                 }
             }

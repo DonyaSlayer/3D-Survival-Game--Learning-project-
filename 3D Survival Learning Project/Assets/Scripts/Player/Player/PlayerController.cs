@@ -41,6 +41,9 @@ public class PlayerController : MonoBehaviour
 
     private NeedsManager _needsManager;
 
+    private SaveManager _saveManager;
+    private bool _canMove = true;
+
     private void Awake()
     {
         Cursor.visible = false;
@@ -50,6 +53,31 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _needsManager = NeedsManager.instance;
+        _saveManager = SaveManager.instance;
+        _saveManager.OnSaveRequested += Save;
+        _saveManager.OnLoadCompleted += Load;
+    }
+
+    private void OnDisable()
+    {
+        _saveManager.OnSaveRequested -= Save;
+        _saveManager.OnLoadCompleted -= Load;
+    }
+
+    private void Save()
+    {
+        _saveManager.playerInfo.position = transform.position;
+    }
+    private void Load()
+    {
+        _canMove = false;
+        transform.position = _saveManager.playerInfo.position;
+        Invoke(nameof(CanMove), 0.1f);
+    }
+
+    private void CanMove()
+    {
+        _canMove = true;
     }
 
     private void Update()
@@ -62,51 +90,58 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement(Vector2 moveInput)
     {
-        Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y);
-        direction = Quaternion.Euler(0f, _cameraTransform.eulerAngles.y,0f) * direction;
-        direction.y = 0f;
-        direction.Normalize();
-        if(_characterController.isGrounded)
+        if (_canMove)
         {
-            _verticalVelocity = -1f;
-            if (_jumpAction.action.triggered)
+            Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y);
+            direction = Quaternion.Euler(0f, _cameraTransform.eulerAngles.y, 0f) * direction;
+            direction.y = 0f;
+            direction.Normalize();
+            if (_characterController.isGrounded)
             {
-                _verticalVelocity = _jumpForce;
-            }
-        }
-        else
-        {
-            if (!isInWater)
-            {
-                _verticalVelocity += _gravity * Time.deltaTime;
+                _verticalVelocity = -1f;
+                if (_jumpAction.action.triggered)
+                {
+                    _verticalVelocity = _jumpForce;
+                }
             }
             else
             {
-                _verticalVelocity -= _waterGravity * Time.deltaTime;
-                if(IsJumpPressed)
+                if (!isInWater)
                 {
-                    _verticalVelocity = Mathf.Lerp(_verticalVelocity, _swimUpSpeed, 5f * Time.deltaTime);
+                    _verticalVelocity += _gravity * Time.deltaTime;
                 }
-                _verticalVelocity = Mathf.Max(_verticalVelocity, -2f);
+                else
+                {
+                    _verticalVelocity -= _waterGravity * Time.deltaTime;
+                    if (IsJumpPressed)
+                    {
+                        _verticalVelocity = Mathf.Lerp(_verticalVelocity, _swimUpSpeed, 5f * Time.deltaTime);
+                    }
+                    _verticalVelocity = Mathf.Max(_verticalVelocity, -2f);
+                }
             }
-        }
 
-        if (_runAction.action.IsPressed() && _needsManager.Energy.CanRun)
-        {
-            _moveSpeed = _runSpeed;
-            _needsManager.Running();
-            isRunning = true;
+            if (_runAction.action.IsPressed() && _needsManager.Energy.CanRun)
+            {
+                _moveSpeed = _runSpeed;
+                _needsManager.Running();
+                isRunning = true;
+            }
+            else
+            {
+                _moveSpeed = _walkSpeed;
+                isRunning = false;
+            }
+
+            Vector3 velocity = direction * _moveSpeed;
+            velocity.y = _verticalVelocity;
+            _characterController.Move(velocity * Time.deltaTime);
+            _handAnimator.SetFloat("Velocity", velocity.magnitude);
         }
         else
         {
-            _moveSpeed = _walkSpeed;
-            isRunning = false;
+            _handAnimator.SetFloat("Velocity", 0);
         }
-
-        Vector3 velocity = direction * _moveSpeed;
-         velocity.y = _verticalVelocity;
-        _characterController.Move(velocity * Time.deltaTime);
-        _handAnimator.SetFloat("Velocity", velocity.magnitude);
     }
 
     private void HandleLook(Vector2 lookInput)

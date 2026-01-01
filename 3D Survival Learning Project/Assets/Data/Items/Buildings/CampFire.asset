@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 874ecc7275c8905418a56a8f02de2db7, type: 3}
-  m_Name: SmallFish
+  m_Name: CampFire
   m_EditorClassIdentifier: Assembly-CSharp::Item
-  itemName: Small Fish
-  itemIcon: {fileID: 615947474, guid: d27580a07ac614543b83819677fe1705, type: 3}
-  itemPrefab: {fileID: 4460835771543336122, guid: d3397828527b20444981f7a4943a7f8f, type: 3}
+  itemName: CampFire
+  itemIcon: {fileID: 2106785891, guid: 05025a4d307913640b26d930e675e185, type: 3}
+  itemPrefab: {fileID: 4816652075166365020, guid: 82b080ad26076914484d14825b9d3f31, type: 3}
   usable:
-    isUsable: 1
-    healthAmount: -3
-    hungerAmount: 10
-    energyAmount: 10
+    isUsable: 0
+    healthAmount: 0
+    hungerAmount: 0
+    energyAmount: 0
   tool:
     isTool: 0
     effectiveness: 0
     durability: 0
     type: 0
   build:
-    _prefab: {fileID: 0}
-    isBuild: 0
+    _prefab: {fileID: 7145389802791278570, guid: ed56a2ea922cac24d9beacc5c2c88df0, type: 3}
+    isBuild: 1

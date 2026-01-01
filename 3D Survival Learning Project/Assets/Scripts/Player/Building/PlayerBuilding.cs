@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerBuilding : MonoBehaviour
 {
     [Header("Building Settings")]
-    [SerializeField] private GameObject _buildPrefab;
+    
     [SerializeField] private float _maxBuildDistance;
     [SerializeField] private float _surfaceAngleLimit = 30f;
     [SerializeField] private float _collisionCheckRadius = 1f;
@@ -13,17 +13,38 @@ public class PlayerBuilding : MonoBehaviour
     [SerializeField] private Material _greenMaterial;
     [SerializeField] private Material _redMaterial;
     private bool _canBuild = false;
+    private GameObject _currentBuild;
   
 
     [Header("Input")]
     [SerializeField] private InputActionReference _buildKey;
+
+    [Header("References")]
+    [SerializeField] private InventoryController _inventoryController;
+
     private Camera _camera;
     private GameObject _previewInstance;
+
+    
 
     private void Start()
     {
         _camera = Camera.main;
-        _previewInstance = Instantiate(_buildPrefab);
+    }
+
+    private void Update()
+    {
+        if(_currentBuild)
+        {
+            HandleBuildPreview();
+            HandleInput();
+        }
+    }
+
+    public void NewBuild(GameObject buildPrefab)
+    {
+        _currentBuild = buildPrefab;
+        _previewInstance = Instantiate(buildPrefab);
         _previewInstance.SetActive(false);
 
         foreach (var collider in _previewInstance.GetComponentsInChildren<Collider>())
@@ -31,7 +52,7 @@ public class PlayerBuilding : MonoBehaviour
             collider.enabled = false;
         }
 
-        for ( int i = 0; i < _previewInstance.transform.childCount; i++ )
+        for (int i = 0; i < _previewInstance.transform.childCount; i++)
         {
             if (_previewInstance.transform.GetChild(i).GetComponent<MeshRenderer>() == false)
             {
@@ -40,10 +61,11 @@ public class PlayerBuilding : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void DeleteBuild()
     {
-        HandleBuildPreview();
-        HandleInput();
+        Destroy(_previewInstance);
+        _currentBuild = null;
+        _canBuild = false;
     }
 
     private void HandleBuildPreview()
@@ -79,7 +101,8 @@ public class PlayerBuilding : MonoBehaviour
         if (!_previewInstance.activeSelf) return;
         if (_buildKey.action.WasPerformedThisFrame() && _canBuild)
         {
-            Instantiate(_buildPrefab, _previewInstance.transform.position, _previewInstance.transform.rotation, null);
+            Instantiate(_currentBuild, _previewInstance.transform.position, _previewInstance.transform.rotation, null);
+            _inventoryController.MinusCurrentSelection();
         }
     }
 

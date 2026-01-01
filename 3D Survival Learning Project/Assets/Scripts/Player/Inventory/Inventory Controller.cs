@@ -16,7 +16,6 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private int _currentSelection;
 
     [Header("Tools")]
-
     [SerializeField] private Transform _handTransform;
     public Animator handAnimator;
     public Item currentTool;
@@ -24,10 +23,13 @@ public class InventoryController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Inventory _playerInventory;
+    [SerializeField] private PlayerBuilding _playerBuilding;
+
     private InventoryCell[] _cells;
     private Camera _mainCamera;
     private NeedsManager _needsManager;
-    
+    private Item _currentBuild;
+
 
     private void Awake()
     {
@@ -71,7 +73,7 @@ public class InventoryController : MonoBehaviour
     }
     private void HandleDrop()
     {
-        if( _dropAction.action.triggered && _playerInventory.items[_currentSelection])
+        if (_dropAction.action.triggered && _playerInventory.items[_currentSelection])
         {
             Instantiate(_playerInventory.items[_currentSelection].itemPrefab, _mainCamera.transform.position + transform.forward, Quaternion.identity, null);
             _playerInventory.ClearSlot(_currentSelection);
@@ -104,7 +106,14 @@ public class InventoryController : MonoBehaviour
         RefreshSelection();
     }
 
-    private void RefreshSelection()
+    public void MinusCurrentSelection()
+    {
+        _playerInventory.itemCount[_currentSelection]--;
+        _playerInventory.Refresh();
+        RefreshSelection();
+    }
+
+    public void RefreshSelection()
     {
         for (int i = 0; i < _cells.Length; i++)
         {
@@ -112,13 +121,37 @@ public class InventoryController : MonoBehaviour
         }
         _cells[_currentSelection].selection.SetActive(true);
         RefreshTool();
+        RefreshBuild();
+    }
+
+    private void RefreshBuild()
+    {
+        if (_playerInventory.items[_currentSelection] && _playerInventory.items[_currentSelection].build.isBuild)
+        {
+            if (_currentBuild == null)
+            {
+                _currentBuild = _playerInventory.items[_currentSelection];
+                _playerBuilding.NewBuild(_currentBuild.build._prefab);
+            }
+            else
+            {
+                _playerBuilding.DeleteBuild();
+                _currentBuild = _playerInventory.items[_currentSelection];
+                _playerBuilding.NewBuild(_currentBuild.build._prefab);
+            }
+        }
+        else
+        {
+            _playerBuilding.DeleteBuild();
+            _currentBuild = null;
+        }
     }
 
     public void RefreshTool()
     {
         if (_playerInventory.items[_currentSelection] && _playerInventory.items[_currentSelection].tool.isTool)
-        { 
-            if(currentTool && currentTool != _playerInventory.items[_currentSelection])
+        {
+            if (currentTool && currentTool != _playerInventory.items[_currentSelection])
             {
                 StartCoroutine(Disactivate(_currentToolInHand));
                 handAnimator.Play("HideTool");
@@ -131,11 +164,11 @@ public class InventoryController : MonoBehaviour
                 {
                     _handTransform.GetChild(i).gameObject.SetActive(true);
                     currentTool = _playerInventory.items[_currentSelection];
-                   _currentToolInHand = _handTransform.GetChild(i).gameObject;
+                    _currentToolInHand = _handTransform.GetChild(i).gameObject;
                     handAnimator.Play("TakeToolAnim");
                 }
             }
-        }else
+        } else
         {
             for (int i = 0; i < _handTransform.childCount; i++)
             {
@@ -144,7 +177,6 @@ public class InventoryController : MonoBehaviour
                     StartCoroutine(Disactivate(_currentToolInHand));
                     handAnimator.Play("HideTool");
                 }
-                //_handTransform.GetChild(i).gameObject.SetActive(false);
                 _currentToolInHand = null;
                 currentTool = null;
             }

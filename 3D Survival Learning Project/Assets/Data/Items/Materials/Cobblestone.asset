@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Cobblestone
   m_EditorClassIdentifier: Assembly-CSharp::Item
   itemName: Cobblestone
-  itemIcon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  itemIcon: {fileID: -239038138, guid: 6e1fd74a8b3861d418a8d968d9ff775f, type: 3}
   itemPrefab: {fileID: 6987130533443930838, guid: 0b469314036b3a7408eee72164e119c7, type: 3}
   usable:
     isUsable: 0
@@ -25,3 +25,6 @@ MonoBehaviour:
     effectiveness: 0
     durability: 0
     type: 0
+  build:
+    _prefab: {fileID: 0}
+    isBuild: 0

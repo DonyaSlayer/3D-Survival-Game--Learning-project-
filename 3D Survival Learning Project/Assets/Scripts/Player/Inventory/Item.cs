@@ -9,6 +9,7 @@ public class Item : ScriptableObject
     public GameObject itemPrefab;
     public Usable usable;
     public Tool tool;
+    public Build build;
 }
 
 [Serializable]
@@ -37,4 +38,13 @@ public class Tool
     public ToolType type;
 
 }
+
+[Serializable]
+
+public class Build
+{
+    public GameObject _prefab;
+    public bool isBuild;
+}
+
 

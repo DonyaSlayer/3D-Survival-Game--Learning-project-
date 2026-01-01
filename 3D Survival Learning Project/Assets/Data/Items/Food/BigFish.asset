@@ -13,10 +13,18 @@ MonoBehaviour:
   m_Name: BigFish
   m_EditorClassIdentifier: Assembly-CSharp::Item
   itemName: Big Fish
-  itemIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  itemIcon: {fileID: 1948079409, guid: 430ee2bdf6c28784d921d22972f3d670, type: 3}
   itemPrefab: {fileID: 665807475240383984, guid: da08b2add9bab864098b9896a08a89b4, type: 3}
   usable:
     isUsable: 1
     healthAmount: -5
     hungerAmount: 20
     energyAmount: 20
+  tool:
+    isTool: 0
+    effectiveness: 0
+    durability: 0
+    type: 0
+  build:
+    _prefab: {fileID: 0}
+    isBuild: 0
