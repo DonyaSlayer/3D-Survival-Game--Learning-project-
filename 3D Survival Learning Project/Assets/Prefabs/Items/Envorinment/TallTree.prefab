@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2295303631740721623}
   - component: {fileID: 1707325824970407334}
   - component: {fileID: 744477791767024999}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Demo_Spruce_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 9118046367997788235}
   - component: {fileID: 4273007170671592652}
   - component: {fileID: 5970657567797204388}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TallTree
   m_TagString: Untagged
   m_Icon: {fileID: 0}

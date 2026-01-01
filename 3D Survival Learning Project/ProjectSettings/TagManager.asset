@@ -14,8 +14,8 @@ TagManager:
   - FriendlyNPC
   - EnemyNPC
   - Player
-  - 
-  - 
+  - Obstacle
+  - Terrain
   - 
   - 
   - 

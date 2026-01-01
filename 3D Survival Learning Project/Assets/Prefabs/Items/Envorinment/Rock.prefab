@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7858370925353332182}
   - component: {fileID: 390815029450587153}
   - component: {fileID: 5429079517475428362}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 8481640416324928836}
   - component: {fileID: 5827891184814292960}
   - component: {fileID: 7431953777497009616}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RockHitParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
