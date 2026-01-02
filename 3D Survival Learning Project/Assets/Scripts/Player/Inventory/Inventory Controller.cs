@@ -24,6 +24,7 @@ public class InventoryController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Inventory _playerInventory;
     [SerializeField] private PlayerBuilding _playerBuilding;
+    private SaveManager _saveManager;
 
     private InventoryCell[] _cells;
     private Camera _mainCamera;
@@ -41,6 +42,30 @@ public class InventoryController : MonoBehaviour
     {
         RefreshSelection();
         _needsManager = NeedsManager.instance;
+        _saveManager = SaveManager.instance;
+        _saveManager.OnSaveRequested += Save;
+        _saveManager.OnLoadCompleted += Load;
+    }
+
+    private void OnDisable()
+    {
+        _saveManager.OnSaveRequested -= Save;
+        _saveManager.OnLoadCompleted -= Load;
+    }
+
+    private void Save() 
+    {
+        _saveManager.playerInfo.items = _playerInventory.items;
+        _saveManager.playerInfo.counts = _playerInventory.itemCount;
+    }
+
+    private void Load()
+    {
+        _playerInventory.items = _saveManager.playerInfo.items;
+        _playerInventory.itemCount = _saveManager.playerInfo.counts;
+
+        RefreshSelection();
+        _playerInventory.Refresh();
     }
 
     private void Update()
@@ -75,7 +100,7 @@ public class InventoryController : MonoBehaviour
     {
         if (_dropAction.action.triggered && _playerInventory.items[_currentSelection])
         {
-            Instantiate(_playerInventory.items[_currentSelection].itemPrefab, _mainCamera.transform.position + transform.forward, Quaternion.identity, null);
+            Instantiate(_playerInventory.items[_currentSelection].itemPrefab, _mainCamera.transform.position + transform.forward, Quaternion.identity, ItemsManager.instance.transform);
             _playerInventory.ClearSlot(_currentSelection);
         }
     }

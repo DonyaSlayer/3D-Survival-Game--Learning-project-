@@ -10,6 +10,7 @@ public class SaveManager : MonoBehaviour
     public event Action OnSaveRequested;
     public event Action OnLoadCompleted;
     public static SaveManager instance;
+    public WorldInfo worldInfo;
 
     private void Awake()
     {
@@ -32,12 +33,14 @@ public class SaveManager : MonoBehaviour
     {
         OnSaveRequested?.Invoke();
         Save("playerInfo", playerInfo);
+        Save("worldInfo", worldInfo);
         Debug.Log("Saving the progress");
     }
 
     public void LoadAll()
     {
         playerInfo = Load<PlayerInfo>("playerInfo");
+        worldInfo = Load<WorldInfo>("worldInfo");
         OnLoadCompleted?.Invoke();
         Debug.Log("Loading the progress");
     }
@@ -68,4 +71,20 @@ public class SaveManager : MonoBehaviour
 public class PlayerInfo
 {
     public Vector3 position;
+    public Item[] items;
+    public int[] counts;
 }
+
+[Serializable]
+public class WorldInfo
+{
+    public Item[] items;
+    public Vector3[] position;
+    public Quaternion[] rotation;
+
+    public string[] buildingsNames;
+    public Vector3[] buildPositions;
+    public Quaternion[] buildRotations;
+}
+
+

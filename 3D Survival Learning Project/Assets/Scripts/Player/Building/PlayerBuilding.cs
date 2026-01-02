@@ -21,6 +21,7 @@ public class PlayerBuilding : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private InventoryController _inventoryController;
+    private BuildManager _buildManager;
 
     private Camera _camera;
     private GameObject _previewInstance;
@@ -30,6 +31,7 @@ public class PlayerBuilding : MonoBehaviour
     private void Start()
     {
         _camera = Camera.main;
+        _buildManager = BuildManager.instance;
     }
 
     private void Update()
@@ -101,7 +103,7 @@ public class PlayerBuilding : MonoBehaviour
         if (!_previewInstance.activeSelf) return;
         if (_buildKey.action.WasPerformedThisFrame() && _canBuild)
         {
-            Instantiate(_currentBuild, _previewInstance.transform.position, _previewInstance.transform.rotation, null);
+            Instantiate(_currentBuild, _previewInstance.transform.position, _previewInstance.transform.rotation, _buildManager.transform);
             _inventoryController.MinusCurrentSelection();
         }
     }
