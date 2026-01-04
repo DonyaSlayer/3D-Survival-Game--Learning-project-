@@ -38,10 +38,12 @@ public class UnderwaterEffect : MonoBehaviour
 
     private void EnableUnderwaterEffect()
     {
+
         RenderSettings.fog = true;
         RenderSettings.fogColor = underwaterColor;
         RenderSettings.fogDensity = underwaterDensity;
         RenderSettings.fogMode = FogMode.Exponential;
+        RenderSettings.skybox = null;
     }
 
     private void DisableUnderwaterEffect()
