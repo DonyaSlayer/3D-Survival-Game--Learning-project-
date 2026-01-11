@@ -82,6 +82,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (GameMenuController.IsPaused) return;
         _moveInput = _moveAction.action.ReadValue<Vector2>();
         _lookInput = _lookAction.action.ReadValue<Vector2>();
         HandleMovement(_moveInput);
@@ -90,6 +91,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement(Vector2 moveInput)
     {
+        if (GameMenuController.IsPaused) return;
         if (_canMove)
         {
             Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y);
@@ -146,8 +148,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandleLook(Vector2 lookInput)
     {
+        if (GameMenuController.IsPaused) return;
         transform.Rotate(Vector3.up * lookInput.x * _lookSpeed * Time.deltaTime);
-
         _cameraPitch -= lookInput.y * _lookSpeed * Time.deltaTime;  
         _cameraPitch = Mathf.Clamp(_cameraPitch, -_cameraLimit, _cameraLimit);
         _cameraTransform.localEulerAngles = new Vector3(_cameraPitch, 0f, 0f);

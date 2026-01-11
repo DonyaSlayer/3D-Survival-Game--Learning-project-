@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tent
   m_EditorClassIdentifier: Assembly-CSharp::Item
   itemName: Tent
-  itemIcon: {fileID: 7482667652216324306, guid: 576b8c77aee26e640b1e36af9f81e5b0, type: 3}
+  itemIcon: {fileID: 1448172249, guid: 00e4ead2110e75440b2f33722bd3f8f8, type: 3}
   itemPrefab: {fileID: 2290484812149099541, guid: cab5d5860c411bc4691c3c1f43b4e5f9, type: 3}
   usable:
     isUsable: 0
